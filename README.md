@@ -6,6 +6,8 @@ $$
 \pi = \int^1_0 \frac{4}{1 + x^2} ~dx
 $$
 
+![monte_carlo_pi](https://github.com/h16ki/ProbabilisticProgramming/fig/mote_carlo_pi.png)
+
 ## Importance sampling
 
 ## Monte Carlo Markov Chain method
