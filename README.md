@@ -6,7 +6,17 @@ $$
 \pi = \int^1_0 \frac{4}{1 + x^2} ~dx
 $$
 
-![monte_carlo_pi](fig/monte_carlo_pi.png)
+<p align="center">
+  <img width="460" height="auto" src="./fig/monte_carlo_pi.png">
+</p>
+
+
+<p align="center">
+  <b>Fig 1.</b>
+  Monte Carlo pi
+</p>
+
+<!-- ![monte_carlo_pi](fig/monte_carlo_pi.png) -->
 
 ## Importance sampling
 
