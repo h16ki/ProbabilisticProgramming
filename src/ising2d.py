@@ -1,6 +1,7 @@
 import numpy as np
 import numpy.typing as npt
 from tqdm import tqdm
+from dataclasses import dataclass
 
 # matplotlib setting
 DATA = {
@@ -10,7 +11,7 @@ DATA = {
 }
 
 # Simulatioin property
-MAX_ITER: int = 4 # Total iteration in simulation
+MAX_ITER: int = 10000 # Total iteration in simulation
 BURN_IN: int = 1024
 CHAIN: int = 2
 THINNING_INTERVAL: int = 4
@@ -18,8 +19,8 @@ DELTA_T: float = 0.1 # Stride of temperature
 DELTA_TC: float = 0.01 # Stride of critical temperature
 
 # System
-X_LENGTH: int = 4
-Y_LENGTH: int = 4
+X_LENGTH: int = 9
+Y_LENGTH: int = 16
 VOLUME: float = 1.0 * X_LENGTH * Y_LENGTH
 
 # Physical parameters
@@ -34,31 +35,44 @@ Tc_MAX: float = 0.1 # Upper limit around critical temperature
 # Alias of type annotation
 Spin = npt.NDArray[np.float_]
 
+@dataclass
+class IsingModel:
+    size: list[float]
+    temperature: float
+    save_dir: str
 
-def total_energy(sigma: Spin) -> float:
-    energy: float = 0.0
-    for i in range(X_LENGTH):
-        for j in range(Y_LENGTH):
-            up = (i - 1) % X_LENGTH
-            down = (i + 1) % X_LENGTH
-            left = (j - 1) % Y_LENGTH
-            right = (j + 1) % Y_LENGTH
+    def total_energy(self, sigma: Spin) -> float:
+        energy: float = 0.0
+        for i in range(X_LENGTH):
+            for j in range(Y_LENGTH):
+                up = (i - 1) % X_LENGTH
+                down = (i + 1) % X_LENGTH
+                left = (j - 1) % Y_LENGTH
+                right = (j + 1) % Y_LENGTH
 
-            neighbor = sigma[up, j] + sigma[i, right] + sigma[down, j] + sigma[i, left]
-            energy += -0.5 * J * sigma[i, j] * neighbor
+                neighbor = sigma[up, j] + sigma[i, right] + sigma[down, j] + sigma[i, left]
+                energy += -0.5 * J * sigma[i, j] * neighbor
 
-    energy += -K * np.sum(sigma)
-    return energy
+        energy += -K * np.sum(sigma)
+        return energy
 
-def magnetization(sigma: Spin) -> float:
-    m: float = np.sum(sigma)
-    return m / VOLUME
+    def magnetization(self, sigma: Spin) -> float:
+        m: float = np.sum(sigma)
+        return m / VOLUME
 
-def susceptibility(sigma: Spin) -> float:
-    pass
+    def susceptibility(self, sigma: Spin) -> float:
+        return 1.0
 
-def specific_heat_capacity(sigma: Spin) -> float:
-    pass
+    def specific_heat_capacity(self, sigma: Spin) -> float:
+        return 1.0
+
+    @staticmethod
+    def array_to_img(sigma: Spin):
+        pass
+
+    @staticmethod
+    def export(sigma: Spin, path: str):
+        pass
 
 def metropolis_hastings_criterion(sigma: Spin, i: int, j: int, temperature: float) -> bool:
     up = (i - 1) % X_LENGTH
@@ -86,15 +100,16 @@ def mcstep(num: int, sigma: Spin, temperature: float):
 
         yield n, sigma
 
+
 if __name__ == "__main__":
     print(f"\033[1;34mMonte Carlo Simulation: 2D Ising Model\033[m")
     sigma = 2.0 * np.random.randint(2, size=(X_LENGTH, Y_LENGTH)) - 1.0 # initial state
     # sigma = np.ones([X_LENGTH, Y_LENGTH])
     print(sigma)
 
-    temperature = 10 * Tc
+    temperature = 0.1 * Tc
     for n, state in mcstep(MAX_ITER, sigma, temperature):
-        print(n, state)
+        print(state)
         # if (n % THINNING_INTERVAL == 0):
         #     pass
     print(DATA)

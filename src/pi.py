@@ -28,8 +28,28 @@ def calc_pi():
     pi = 4.0 * len(accepted[0]) / N
     return pi
 
+
+def trapezoid_pi():
+    integrand = lambda x: 1.0 / (1.0 + x ** 2.0)
+    delta = 1 / N
+    x = 0
+    area = 0
+    for n in range(1, N):
+        upper = x + n*delta
+        lower = x + (n-1) * delta
+        area += 0.5 * delta * (integrand(lower) + integrand(upper))
+
+    return 4.0 * area
+
 if __name__ == "__main__":
     num_pi = np.pi
+    print("Calculate pi by trapezoid formula.")
+    print(f"Division: {N}")
+    trapezoid_pi = trapezoid_pi()
+    err = abs(num_pi - trapezoid_pi) / num_pi
+
+    result = f"Pi: {trapezoid_pi}, Error: {err:.2%}"
+    print(result)
 
     print("Calculate pi by probabilistic algorithm.")
     print(f"Trials: {N}")
