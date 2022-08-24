@@ -19,8 +19,8 @@ DELTA_T: float = 0.1 # Stride of temperature
 DELTA_TC: float = 0.01 # Stride of critical temperature
 
 # System
-X_LENGTH: int = 9
-Y_LENGTH: int = 16
+X_LENGTH: int = 32
+Y_LENGTH: int = 32
 VOLUME: float = 1.0 * X_LENGTH * Y_LENGTH
 
 # Physical parameters
