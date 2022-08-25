@@ -7,11 +7,11 @@ import matplotlib.pyplot as plt
 
 plt.axes().set_aspect("equal", adjustable="box")
 fig, ax = plt.subplots()
-basedir: str = "../fig/"
+root: str = "../"
 
 def to_imshow(path: str, name: str, **kwargs):
     try:
-        os.makedirs(path)
+        os.makedirs(path, exist_ok=True)
     except:
         pass
 
@@ -35,6 +35,9 @@ def to_animation():
     pass
 
 
+def save(plot: Any, ext: str):
+    pass
+
 if __name__ == "__main__":
-    to_imshow(basedir, "test")
+    to_imshow(root, "test")
 
