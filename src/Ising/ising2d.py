@@ -1,24 +1,29 @@
-from cmath import exp
-from xmlrpc.client import MAXINT
+from cProfile import label
+from timeit import repeat
 import numpy as np
 import numpy.typing as npt
 from tqdm import tqdm
 from dataclasses import dataclass
 import os, glob, shutil
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
 
 MTH = ["Metropolis-Hastings", "Heat-Bath", "Self-Learning", "Swendsen-Wang", "Wolff"]
 
 # Simulatioin property
-MAX_ITER: int = 1000 # Total iteration in simulation
+np.random.seed(1)
+fig_path = "./../../fig/"
+
+MAX_ITER: int = 4096 # Total iteration in simulation
 BURN_IN: int = 1024
 CHAIN: int = 2
-THINNING_INTERVAL: int = 4
+THINNING_INTERVAL: int = 8
 DELTA_T: float = 0.1 # Stride of temperature
 DELTA_TC: float = 0.01 # Stride of critical temperature
 
 # System
-X_LENGTH: int = 32
-Y_LENGTH: int = 32
+X_LENGTH: int = 36
+Y_LENGTH: int = 64
 VOLUME: float = 1.0 * X_LENGTH * Y_LENGTH
 
 # Physical parameters
@@ -61,7 +66,7 @@ class IsingModel:
     def susceptibility(self, sigma: Spin) -> float:
         return 1.0
 
-    def specific_heat_capacity(self, sigma: Spin) -> float:
+    def heat_capacity(self, sigma: Spin) -> float:
         return 1.0
 
     @staticmethod
@@ -71,6 +76,31 @@ class IsingModel:
     @staticmethod
     def export(sigma: Spin, path: str):
         pass
+
+def to_image(path: str):
+    for n, d in enumerate(glob.glob(path)):
+        array = np.load(d)
+        name = os.path.basename(d)
+        t, _ = os.path.splitext(name)
+        print(t)
+
+        artists = []
+        fig, ax = plt.subplots(1,1)
+        for mcmc in range(array.shape[0]):
+            if mcmc % THINNING_INTERVAL == 0:
+                sigma = array[mcmc]
+                # title = plt.text(0.5,1.01,mcmc, ha="center",va="bottom",color=np.random.rand(3),
+                #          transform=ax.transAxes, fontsize="large")
+                # text = ax.text(mcmc, mcmc, mcmc)
+                img = plt.imshow(sigma, label=f"T: {t}, MCMC: {mcmc}")
+                artists.append([img])
+                # plt.title(f"T: {t}, MCMC: {mcmc}")
+
+        ani = animation.ArtistAnimation(fig, artists=artists, interval=1, repeat=False)
+        save = fig_path + f"T:{t}" + ".gif"
+        ani.save(save)
+        # break
+    return
 
 def metropolis_hastings_criterion(sigma: Spin, i: int, j: int, temperature: float) -> bool:
     up = (i - 1) % X_LENGTH
@@ -145,5 +175,6 @@ if __name__ == "__main__":
             os.makedirs(f"{dir}", exist_ok=True)
             np.save(dir + f"/{t}", conf)
 
+    to_image(path=f"./{dir}/*")
 
     print("Complete.")
