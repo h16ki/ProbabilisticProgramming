@@ -131,6 +131,8 @@ def calc_pi():
 
 ## Monte Carlo Markov Chain method
 
+マルコフ連鎖[^2018Fukushima]
+
 ### Detailed balance condition
 
 熱平衡にある２つの状態 $|i\rangle, |j\rangle$ が互いにある確率で遷移するとする。
@@ -151,6 +153,9 @@ $$
 ## Self-Learning Monte Carlo[^2019Nagai]
 
 [^Feynman]: 要出典
+
+[^2018Fukushima]: 福島孝治, < 講義ノート> モンテカルロ法の基礎と応用--計算物理学からデータ駆動科学へ--, 物性研究・電子版, 2018, 7.2: 1-10.,
+https://doi.org/10.14989/235551
 
 [^2019Nagai]: 永井 佑紀, 自己学習モンテカルロ法：機械学習を用いたマルコフ連鎖モンテカルロ法の加速, アンサンブル, 2019, 21 巻, 1 号, p. 15-21, 公開日 2020/01/31, Online ISSN 1884-5088, Print ISSN 1884-6750, https://doi.org/10.11436/mssj.21.15, https://www.jstage.jst.go.jp/article/mssj/21/1/21_15/_article/-char/ja, 抄録:
 
