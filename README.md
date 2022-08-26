@@ -65,11 +65,13 @@ $$
 この積分を以下のように書き換える:
 
 $$
+\begin{aligned}
 \frac{\pi}{4}
-= \iint^1_0 \theta(1 - x^2 - y^2) dx dy
+&= \iint^1_0 \theta(1 - x^2 - y^2) dx dy
 = \iint^1_0 \frac{p(x,y)\theta(1 - x^2 - y^2)}{p(x,y)} dx dy
-\sim \frac{1}{N}\sum_{n=1}^N \frac{\theta(1 - x_n^2 - y_n^2)}{p(x,y)}
+\\\\ & \sim \frac{1}{N}\sum_{n=1}^N \frac{\theta(1 - x_n^2 - y_n^2)}{p(x,y)}
 = \frac{1}{N}\sum_{n=1}^N \theta(1 - x_n^2 - y_n^2)
+\end{aligned}
 $$
 
 ここで $p(x,y)$ は確率密度関数であり区間 $[0,1]$ の一様分布を表す。
