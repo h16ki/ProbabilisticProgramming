@@ -148,6 +148,8 @@ $$
 
 ### Metropolis-Hasting algorithm
 
+詳細釣り合いを満たす遷移確率を決める方法の一種
+
 ### Heat bath algolithm
 
 ### Hamiltonian Monte Carlo
